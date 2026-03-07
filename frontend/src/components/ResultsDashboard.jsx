@@ -1,298 +1,297 @@
 import React, { useEffect, useRef } from 'react';
-import { AlertCircle, CheckCircle2, ShieldAlert, BadgeInfo } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, AlertTriangle, Info, ArrowLeft, Download } from 'lucide-react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MOCK_RESULT } from '../App';
-
-gsap.registerPlugin(ScrollTrigger);
+import heroNight from '../assets/hero-night.jpg';
 
 const ResultsDashboard = ({ result, onReset }) => {
+  const rootRef = useRef(null);
+
   if (!result) return null;
 
-  const score = result.risk_score;
-  
-  // Decide colors based on score
-  let themeColor = 'var(--safe)';
-  if (score > 30 && score <= 65) themeColor = 'var(--warning)';
-  if (score > 65) themeColor = 'var(--danger)';
+  // Handle error case from backend
+  if (result.error) {
+    return (
+      <div style={styles.dashboard}>
+        <div style={{
+          ...styles.heroBackground,
+          backgroundImage: `linear-gradient(rgba(10,10,10,0.75), rgba(10,10,10,0.9)), url(${heroNight})`
+        }} />
+        <div style={styles.container}>
+          <div style={styles.errorCard}>
+            <ShieldAlert size={48} color="var(--accent)" />
+            <h2 style={styles.heroHeading}>ANALYSIS FAILED</h2>
+            <p style={styles.heroSummary}>{result.error}</p>
+            <button onClick={onReset} className="btn btn-primary" style={{ marginTop: '24px' }}>
+              TRY AGAIN
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const verdictConfig = {
-    HIGH: { text: "HIGH RISK", bg: "#fef2f2", border: "#fecaca", color: "var(--danger)" },
-    SUSPICIOUS: { text: "SUSPICIOUS", bg: "#fffbeb", border: "#fde68a", color: "var(--warning)" },
-    LOW: { text: "LOW RISK", bg: "#f0fdf4", border: "#bbf7d0", color: "var(--safe)" }
-  };
-  
-  let currentVerdict = verdictConfig.LOW;
-  if (score > 65) currentVerdict = verdictConfig.HIGH;
-  else if (score > 30) currentVerdict = verdictConfig.SUSPICIOUS;
+  const score = result.risk_score ?? Math.round((result.confidence_score || 0) * 100);
+  const isHighRisk = score > 65;
+  const isSuspicious = score > 30 && score <= 65;
+
+  let verdict = "LOW RISK";
+  let VerdictIcon = ShieldCheck;
+  let accentColor = "#10b981"; // Safe green
+  let verdictDescription = "Argus analysis indicates this listing appears legitimate.";
+
+  if (isHighRisk) {
+    verdict = "HIGH RISK";
+    VerdictIcon = ShieldAlert;
+    accentColor = "#ef4444"; // Danger red
+    verdictDescription = "Argus detected signals commonly associated with rental scams.";
+  } else if (isSuspicious) {
+    verdict = "SUSPICIOUS";
+    VerdictIcon = AlertTriangle;
+    accentColor = "var(--accent)";
+    verdictDescription = "Argus found some anomalies that warrant careful verification.";
+  }
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // 1. Gauge Drawing Animation
-      const circumference = 376.99;
-      const progressOffset = circumference - (score / 100) * circumference;
+    let ctx = gsap.context(() => {
+      // Safety checks for GSAP targets
+      const targets = [
+        { selector: '.hero-section', vars: { opacity: 0, y: 20 } },
+        { selector: '.signal-card', vars: { opacity: 0, y: 30, stagger: 0.1 } },
+        { selector: '.reasoning-section', vars: { opacity: 0, y: 40 } },
+        { selector: '.rec-card', vars: { opacity: 0, scale: 0.95, stagger: 0.05 } }
+      ];
 
-      gsap.fromTo('.gauge-arc', 
-        { strokeDashoffset: circumference },
-        { strokeDashoffset: progressOffset, duration: 1.8, ease: 'power2.out', delay: 0.3 }
-      );
-
-      // 2. Verdict Badge Pop
-      gsap.fromTo('.verdict-badge',
-        { scale: 0.5, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.8, ease: 'elastic.out(1, 0.5)', delay: 0.9 }
-      );
-
-      // 3. Findings list stagger
-      gsap.from('.finding-item', {
-        opacity: 0, x: 20,
-        stagger: 0.1, duration: 0.5,
-        ease: 'power2.out', delay: 0.8
+      targets.forEach(t => {
+        if (document.querySelector(t.selector)) {
+          gsap.from(t.selector, {
+            ...t.vars,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: t.selector.includes('section') || t.selector.includes('card') ? {
+              trigger: t.selector,
+              start: 'top 90%'
+            } : undefined
+          });
+        }
       });
 
-      // 4. Signal Cards Details
-      gsap.from('.signal-card', {
-        scrollTrigger: { trigger: '.signal-cards', start: 'top 80%' },
-        opacity: 0, y: 30,
-        stagger: 0.12, duration: 0.6, ease: 'power2.out'
-      });
+      // Gauge animation safety
+      if (document.querySelector('.gauge-path')) {
+        const path = document.querySelector('.gauge-path');
+        const length = path.getTotalLength();
+        gsap.fromTo('.gauge-path',
+          { strokeDasharray: length, strokeDashoffset: length },
+          { strokeDashoffset: length - (score / 100) * length, duration: 2, ease: 'power4.out', delay: 0.5 }
+        );
+      }
+    }, rootRef);
 
-      // 5. Reasoning section reveal
-      gsap.from('.reasoning-card', {
-        scrollTrigger: { trigger: '.reasoning-section', start: 'top 85%' },
-        opacity: 0, y: 40, duration: 1, ease: 'power3.out'
-      });
-
-      // 6. Recommendation clip reveals
-      gsap.from('.recommendation-card', {
-        scrollTrigger: { trigger: '.recommendations', start: 'top 85%' },
-        clipPath: 'inset(0 100% 0 0)',
-        duration: 0.7,
-        stagger: 0.15,
-        ease: 'power3.inOut'
-      });
-
-    });
     return () => ctx.revert();
   }, [score]);
 
   return (
-    <div style={styles.dashboard}>
-      
-      {/* Top Nav */}
-      <div style={styles.topNav}>
-        <button onClick={onReset} style={styles.backBtn}>&larr; New Analysis</button>
-        <div style={styles.urlDisplay}>{result.source_url || result.url || 'Analyzed Listing'}</div>
-        <button style={styles.downloadBtn}>Download Report</button>
+    <div ref={rootRef} style={styles.dashboard}>
+      {/* Background Layer */}
+      <div style={{
+        ...styles.heroBackground,
+        backgroundImage: `linear-gradient(rgba(10,10,10,0.75), rgba(10,10,10,0.9)), url(${heroNight})`
+      }} />
+
+      {/* HEADER NAV */}
+      <div style={styles.nav}>
+        <button onClick={onReset} style={styles.navBtn}>
+          <ArrowLeft size={18} />
+          <span>NEW ANALYSIS</span>
+        </button>
+        <span style={styles.navUrl}>{result.scraped_data?.source_url || result.url}</span>
+        <button style={styles.navBtn}>
+          <Download size={18} />
+          <span>REPORT</span>
+        </button>
       </div>
 
-      <div style={styles.content}>
-        
-        {/* HERO SCORE CARD */}
-        <div style={styles.heroCard}>
-          
-          <div style={styles.heroLeft}>
-            <div style={styles.gaugeContainer}>
-              <svg viewBox="0 0 140 140" style={styles.gaugeSvg}>
-                <circle cx="70" cy="70" r="60" fill="none" stroke="var(--border)" strokeWidth="10" />
-                <circle 
-                  className="gauge-arc"
-                  cx="70" cy="70" r="60" 
-                  fill="none" 
-                  stroke={themeColor} 
-                  strokeWidth="10" 
-                  strokeLinecap="round"
-                  strokeDasharray="376.99"
-                  strokeDashoffset="376.99"
-                  transform="rotate(-90 70 70)"
-                />
-              </svg>
-              <div style={styles.gaugeCenterText}>
-                <span style={styles.gaugeNum}>{score}</span>
-                <span style={styles.gaugeDenom}>/100</span>
-              </div>
-            </div>
-            
-            <div className="verdict-badge" style={{
-              ...styles.verdictBadge, 
-              backgroundColor: currentVerdict.bg,
-              borderColor: currentVerdict.border,
-              color: currentVerdict.color
-            }}>
-              {currentVerdict.text}
+      <div style={styles.container}>
+
+        {/* SECTION 1: HERO VERDICT */}
+        <section className="hero-section" style={styles.heroSection}>
+          <div style={styles.gaugeWrapper}>
+            <svg viewBox="0 0 100 100" style={styles.gaugeSvg}>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
+              <circle
+                className="gauge-path"
+                cx="50" cy="50" r="45"
+                fill="none"
+                stroke={accentColor}
+                strokeWidth="6"
+                strokeLinecap="round"
+                transform="rotate(-90 50 50)"
+              />
+            </svg>
+            <div style={styles.gaugeContent}>
+              <span style={styles.gaugeScore}>{score}</span>
+              <span style={styles.gaugeLabel}>SCORE</span>
             </div>
           </div>
 
-          <div style={styles.heroRight}>
-            <h3 style={styles.rightHeading}>Risk Indicators:</h3>
-            <div style={styles.findingsList}>
-              {/* Show actual reasoning from engines as indicators */}
-              {result.price_analysis?.reasoning && (
-                <div className="finding-item" style={styles.findingItem}>
-                  <ShieldAlert size={16} color={result.price_analysis.score > 50 ? "var(--danger)" : "var(--safe)"} style={{ flexShrink: 0, marginTop: '2px' }} />
-                  <span style={styles.findingText}>Price: {result.price_analysis.reasoning}</span>
-                </div>
-              )}
-              {result.text_analysis?.reasoning && (
-                <div className="finding-item" style={styles.findingItem}>
-                  <BadgeInfo size={16} color={result.text_analysis.score > 50 ? "var(--warning)" : "var(--safe)"} style={{ flexShrink: 0, marginTop: '2px' }} />
-                  <span style={styles.findingText}>Text: {result.text_analysis.reasoning}</span>
-                </div>
-              )}
-              <div className="finding-item" style={styles.findingItem}>
-                <CheckCircle2 size={16} color="var(--safe)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span style={styles.findingText}>Analyzed via {result.scrape_method || 'direct'} verification pipeline.</span>
-              </div>
-            </div>
+          <div style={{ ...styles.verdictBadge, color: accentColor, borderColor: accentColor }}>
+            <VerdictIcon size={20} />
+            <span>{verdict}</span>
           </div>
 
-        </div>
+          <p style={styles.heroSummary}>
+            {verdictDescription} Confidence: {Math.round((result.confidence_score || 0) * 100)}%.
+          </p>
+        </section>
 
-        {/* AI REASONING SPACE */}
-        <div className="reasoning-section" style={styles.reasoningContainer}>
-            <h2 style={styles.sectionHeading}>AI Forensic Explanation</h2>
-            <div className="reasoning-card" style={styles.reasoningCard}>
-                <div style={styles.aiBadge}>PREDICTIVE REASONING MODEL v2.0</div>
-                <p style={styles.reasoningBody}>
-                    {result.llm_explanation || "Our AI model has flagged this listing primarily due to cross-referenced anomalies in pricing and description patterns. The requested 'token amount' in the description combined with a price that falls in the lowest 5th percentile for this locality is a classic signature of a rental trap. We recommend absolute caution."}
-                </p>
-                <div style={styles.reasoningFooter}>
-                    <span>Model Output: Bedrock/Claude-3.5-Sonnet</span>
-                    <div style={styles.pulseDot} />
-                </div>
-            </div>
-        </div>
+        {/* SECTION 2: SIGNAL ANALYSIS */}
+        <section style={styles.section}>
+          <h3 style={styles.sectionHeading}>WHY ARGUS FLAGGED THIS</h3>
+          <div style={styles.signalGrid}>
+            <SignalCard
+              name="Price vs Market"
+              value={result.signals?.["Price vs Market"] !== undefined ? `${Math.round(result.signals["Price vs Market"] * 100)}%` : 'N/A'}
+              desc="Deviation from typical regional median."
+            />
+            <SignalCard
+              name="Urgency Language"
+              value={result.signals?.["Urgency Language"] || 0}
+              desc="High-pressure tactics detected in text."
+            />
+            <SignalCard
+              name="Phone Reuse"
+              value={result.signals?.["Phone Reuse"] || 1}
+              desc="Historical broker activity across listings."
+            />
+            <SignalCard
+              name="Image Count"
+              value={result.signals?.["Image Count"] || 0}
+              desc="Visual verification of property assets."
+            />
+          </div>
+        </section>
 
-        {/* 3 SIGNAL CARDS */}
-        <div className="signal-cards" style={styles.signalGrid}>
-          <SignalCard title="Price Anomaly" data={result.price_analysis} />
-          <SignalCard title="Text Patterns" data={result.text_analysis} />
-          <SignalCard title="Image Forensic" data={result.image_analysis} />
-        </div>
+        {/* SECTION 3: AI FORENSIC EXPLANATION */}
+        <section className="reasoning-section" style={styles.section}>
+          <h3 style={styles.sectionHeading}>AI FORENSIC EXPLANATION</h3>
+          <div style={styles.explanationCard}>
+            <p style={styles.explanationText}>
+              {result.explanation || "No detailed forensic reasoning generated."}
+            </p>
+            <div style={styles.modelTag}>PREDICTIVE REASONING v3.2 (OPENROUTER)</div>
+          </div>
+        </section>
 
-        {/* RECOMMENDATIONS */}
-        <div className="recommendations" style={styles.recommendationsContainer}>
-          <h2 style={styles.recHeading}>Next Steps</h2>
+        {/* SECTION 4: RECOMMENDATIONS */}
+        <section style={styles.section}>
+          <h3 style={styles.sectionHeading}>PROTECTIVE RECOMMENDATIONS</h3>
           <div style={styles.recGrid}>
-            {result.recommendations.map((rec, i) => (
-              <div key={i} className="recommendation-card" style={styles.recCard}>
-                <p style={styles.recText}>{rec}</p>
+            {(result.recommendations || []).map((rec, i) => (
+              <div key={i} className="rec-card" style={styles.recCard}>
+                <div style={styles.recBullet} />
+                <span style={styles.recText}>{rec}</span>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
       </div>
     </div>
   );
 };
 
-const SignalCard = ({ title, data }) => {
-    if (!data) return null;
-    let sTheme = 'var(--text)';
-    if (data.score > 65) sTheme = 'var(--danger)';
-    else if (data.score > 30) sTheme = 'var(--warning)';
-    else sTheme = 'var(--safe)';
-
-    return (
-      <div className="signal-card" style={styles.signalCard}>
-        <div style={styles.signalTop}>
-          <div style={styles.signalHeader}>
-            <BadgeInfo size={16} />
-            <span style={styles.signalTitle}>{title}</span>
-          </div>
-          <div style={{...styles.signalBadge, color: sTheme}}>{data.verdict || data.rating}</div>
-        </div>
-
-        <div style={styles.signalProgressBar}>
-          <div 
-            className="signal-progress-fill" 
-            style={{...styles.signalFill, backgroundColor: sTheme, width: data.score + '%'}}
-          ></div>
-        </div>
-
-        <p style={styles.signalDesc}>{data.reasoning || data.reason}</p>
-      </div>
-    );
-};
+const SignalCard = ({ name, value, desc }) => (
+  <div className="signal-card" style={styles.signalCard}>
+    <span style={styles.signalName}>{name}</span>
+    <span style={styles.signalValue}>{value}</span>
+    <p style={styles.signalDesc}>{desc}</p>
+  </div>
+);
 
 const styles = {
   dashboard: {
     minHeight: '100vh',
-    backgroundColor: 'var(--bg)',
-    paddingBottom: '80px',
+    width: '100vw',
+    backgroundColor: '#0c0a09',
+    color: 'white',
+    fontFamily: 'var(--font-sans)',
+    position: 'relative',
+    overflowX: 'hidden'
   },
-  topNav: {
-    height: '60px',
-    backgroundColor: 'var(--surface)',
-    borderBottom: '1px solid var(--border)',
+  heroBackground: {
+    position: 'absolute',
+    inset: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    zIndex: 1
+  },
+  nav: {
+    height: '64px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0 24px',
-    position: 'sticky',
-    top: 0,
+    borderBottom: '1px solid rgba(255,255,255,0.1)',
+    position: 'relative',
     zIndex: 10,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    backdropFilter: 'blur(10px)'
   },
-  backBtn: {
-    fontFamily: "var(--font-body)",
-    fontSize: '14px',
-    fontWeight: 600,
-    color: 'var(--text)',
-  },
-  urlDisplay: {
-    fontFamily: "var(--font-mono)",
-    fontSize: '12px',
-    color: 'var(--text-muted)',
-    '@media (maxWidth: 600px)': { display: 'none' }
-  },
-  downloadBtn: {
-    fontFamily: "var(--font-body)",
-    fontSize: '13px',
-    padding: '6px 14px',
-    border: '1px solid var(--border)',
-    borderRadius: '6px',
-    backgroundColor: 'var(--bg)',
-    color: 'var(--text)',
-  },
-  content: {
-    maxWidth: '860px',
-    margin: '40px auto 0',
-    padding: '0 24px',
-  },
-  // Hero Card
-  heroCard: {
-    backgroundColor: 'var(--surface)',
-    border: '1px solid var(--border)',
-    borderRadius: '20px',
-    padding: '48px',
+  navBtn: {
     display: 'flex',
-    gap: '48px',
     alignItems: 'center',
-    '@media (maxWidth: 768px)': {
-      flexDirection: 'column',
-      padding: '32px 24px',
-      gap: '32px',
-      textAlign: 'center',
-    }
+    gap: '8px',
+    fontSize: '12px',
+    fontWeight: 700,
+    letterSpacing: '0.05em',
+    color: 'white',
   },
-  heroLeft: {
+  navUrl: {
+    fontSize: '11px',
+    fontFamily: 'var(--font-mono)',
+    color: 'rgba(255,255,255,0.5)',
+    maxWidth: '300px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  container: {
+    maxWidth: '800px',
+    margin: '0 auto',
+    padding: '60px 24px 100px',
+    position: 'relative',
+    zIndex: 10
+  },
+  // Sections
+  section: {
+    marginTop: '60px',
+  },
+  sectionHeading: {
+    fontSize: '11px',
+    fontWeight: 800,
+    color: 'white',
+    letterSpacing: '0.15em',
+    marginBottom: '20px',
+    opacity: 0.6,
+  },
+  // Hero
+  heroSection: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '24px',
-    flexShrink: 0,
+    textAlign: 'center',
   },
-  gaugeContainer: {
+  gaugeWrapper: {
     position: 'relative',
-    width: '140px',
-    height: '140px',
+    width: '160px',
+    height: '160px',
+    marginBottom: '24px',
   },
   gaugeSvg: {
     width: '100%',
     height: '100%',
   },
-  gaugeCenterText: {
+  gaugeContent: {
     position: 'absolute',
     inset: 0,
     display: 'flex',
@@ -300,141 +299,139 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  gaugeNum: {
-    fontFamily: "var(--font-display)",
+  gaugeScore: {
     fontSize: '48px',
-    fontWeight: 800,
-    color: 'var(--text)',
+    fontWeight: 900,
     lineHeight: 1,
+    color: 'white'
   },
-  gaugeDenom: {
-    fontFamily: "var(--font-body)",
-    fontSize: '14px',
-    color: 'var(--text-muted)',
-    marginTop: '2px',
+  gaugeLabel: {
+    fontSize: '10px',
+    fontWeight: 700,
+    letterSpacing: '0.1em',
+    opacity: 0.5,
+    color: 'white'
   },
   verdictBadge: {
-    fontFamily: "var(--font-display)",
-    fontSize: '16px',
-    fontWeight: 700,
-    padding: '10px 24px',
-    borderRadius: '100px',
-    borderStyle: 'solid',
-    borderWidth: '1px',
-    letterSpacing: '0.02em',
-  },
-  heroRight: {
-    flex: 1,
-  },
-  rightHeading: {
-    fontFamily: "var(--font-body)",
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '8px 20px',
+    borderRadius: '8px',
+    border: '1px solid',
     fontSize: '14px',
-    fontWeight: 600,
-    color: 'var(--text)',
-    marginBottom: '16px',
-    textTransform: 'uppercase',
+    fontWeight: 800,
     letterSpacing: '0.05em',
+    marginBottom: '16px',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    backdropFilter: 'blur(5px)'
   },
-  findingsList: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  findingItem: {
-    display: 'flex',
-    gap: '12px',
-    padding: '12px 0',
-    borderBottom: '1px solid var(--border-light)',
-  },
-  findingText: {
-    fontFamily: "var(--font-body)",
-    fontSize: '14px',
-    color: 'var(--text)',
+  heroSummary: {
+    fontSize: '18px',
+    color: 'white',
     lineHeight: 1.5,
-    textAlign: 'left',
+    maxWidth: '500px',
+    opacity: 0.95,
   },
-  // Signal Cards Grid
+  // Signals
   signalGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '16px',
-    marginTop: '24px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    gap: '12px',
   },
   signalCard: {
-    backgroundColor: 'var(--surface)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
-    padding: '28px',
-  },
-  signalTop: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '12px',
+    padding: '20px',
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '16px',
+    flexDirection: 'column',
+    gap: '4px',
+    backdropFilter: 'blur(5px)'
   },
-  signalHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    color: 'var(--text)',
-  },
-  signalTitle: {
-    fontFamily: "var(--font-mono)",
-    fontSize: '12px',
+  signalName: {
+    fontSize: '10px',
+    fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
+    opacity: 0.5,
+    color: 'white'
   },
-  signalBadge: {
-    fontFamily: "var(--font-body)",
-    fontSize: '12px',
-    fontWeight: 700,
-  },
-  signalProgressBar: {
-    width: '100%',
-    height: '6px',
-    backgroundColor: 'var(--bg2)',
-    borderRadius: '100px',
-    marginBottom: '16px',
-    overflow: 'hidden',
-  },
-  signalFill: {
-    height: '100%',
-    borderRadius: '100px',
+  signalValue: {
+    fontSize: '24px',
+    fontWeight: 800,
+    color: 'white'
   },
   signalDesc: {
-    fontFamily: "var(--font-body)",
-    fontSize: '13px',
-    color: 'var(--text-muted)',
-    lineHeight: 1.5,
+    fontSize: '12px',
+    color: 'rgba(255,255,255,0.6)',
+    lineHeight: 1.4,
+    marginTop: '4px',
+  },
+  // Explanation
+  explanationCard: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '16px',
+    padding: '32px',
+    position: 'relative',
+    backdropFilter: 'blur(5px)'
+  },
+  explanationText: {
+    fontSize: '16px',
+    lineHeight: 1.7,
+    color: 'white',
+    opacity: 0.9,
+  },
+  modelTag: {
+    position: 'absolute',
+    bottom: '16px',
+    right: '24px',
+    fontSize: '9px',
+    fontWeight: 700,
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--accent)',
+    opacity: 0.6,
   },
   // Recommendations
-  recommendationsContainer: {
-    marginTop: '64px',
-  },
-  recHeading: {
-    fontFamily: "var(--font-display)",
-    fontSize: '28px',
-    fontWeight: 700,
-    color: 'var(--text)',
-    marginBottom: '24px',
-  },
   recGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
   },
   recCard: {
-    backgroundColor: 'var(--surface)',
-    border: '1px solid var(--border)',
-    borderLeft: '4px solid var(--accent)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
     borderRadius: '12px',
-    padding: '24px',
-    clipPath: 'inset(0 0% 0 0)',
+    padding: '16px 20px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    backdropFilter: 'blur(5px)'
+  },
+  recBullet: {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--accent)',
+    flexShrink: 0,
   },
   recText: {
-    fontFamily: "var(--font-body)",
     fontSize: '14px',
-    color: 'var(--text)',
-    lineHeight: 1.6,
+    lineHeight: 1.5,
+    color: 'white'
+  },
+  errorCard: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '24px',
+    padding: '60px 40px',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '16px',
+    backdropFilter: 'blur(10px)'
   }
 };
 

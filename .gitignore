@@ -15,27 +15,36 @@ dist/
 # Environment variables
 .env
 .env.local
+.env.development
+.env.production
 *.env
 
-# IDE
+# IDE & OS
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Backend specific
-backend/results.json
-backend/data/*.json
-!backend/data/.gitkeep
+backend/__pycache__/
 backend/venv/
 backend/.env
+backend/results.json
+backend/data/*.json
+backend/data/*.csv
+backend/ai_layer/datasets/*.csv
+backend/ai_layer/models/*.pkl
+!backend/data/.gitkeep
+!backend/ai_layer/datasets/.gitkeep
 
 # Frontend specific
 frontend/node_modules/
@@ -43,10 +52,27 @@ frontend/dist/
 frontend/.env
 frontend/.env.local
 frontend/coverage/
+frontend/.next/
+frontend/out/
 
-# Test files
-backend/test_*.py
+# Project Cleanliness
+tmp/
+temp/
+.gemini/
+.agents/
+.agent/
+_agents/
+_agent/
+brain/
+implementation_plan.md*
+task.md*
+walkthrough.md*
+*.webp
+*.png
+*.jpg
+*.pptx
+*.pdf
 
-# Other
-.DS_Store
-desktop.ini
+# Allow screenshots
+!docs/screenshots/*.png
+!docs/screenshots/*.jpg

@@ -1,0 +1,27 @@
+# ai_layer/requirements.txt
+# Dependencies for the Argus AI Layer.
+#
+# Install with:
+#   pip install -r ai_layer/requirements.txt
+#   playwright install chromium
+#
+# These are in addition to the root backend/requirements.txt deps.
+
+# --- Scraper (Stage 1) ---
+playwright>=1.42.0          # Primary scraper — dynamic JS-rendered pages
+beautifulsoup4>=4.12.0      # BS4 fallback scraper for static HTML
+requests>=2.31.0            # HTTP client for BS4 scraper
+lxml>=5.1.0                 # Faster HTML parser for BeautifulSoup
+
+# --- Preprocessing & ML (Stages 2-3, not yet implemented) ---
+# Uncomment when implementing Stage 2 and 3:
+# pandas>=2.2.0
+# scikit-learn>=1.4.0
+# imbalanced-learn>=0.12.0  # SMOTE for class imbalance
+# joblib>=1.3.0              # Model serialisation
+
+# --- LLM Explainer (Stage 5, not yet implemented) ---
+# Already available via root requirements.txt:
+#   boto3>=1.34.0            # AWS Bedrock (Claude)
+# Uncomment if using OpenAI instead:
+# openai>=1.14.0

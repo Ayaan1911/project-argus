@@ -6,51 +6,9 @@ import DetectionEngines from './components/DetectionEngines';
 import RiskScoreDemo from './components/RiskScoreDemo';
 import ImpactSection from './components/ImpactSection';
 import CallToAction from './components/CallToAction';
-import AnalysisScreen from './components/AnalysisScreen';
+import AnalysisLoading from './components/AnalysisLoading';
 import ResultsDashboard from './components/ResultsDashboard';
 import Footer from './components/Footer';
-
-// A massive mock data object identical to what the backend would return.
-export const MOCK_RESULT = {
-  "url": "https://www.99acres.com/rent/2bhk-flat-koramangala-bangalore",
-  "risk_score": 74,
-  "verdict": "HIGH RISK",
-  "breakdown": {
-    "signals": {
-      "price_anomaly": {
-        "score": 85,
-        "rating": "High Risk",
-        "reason": "Price is 45% below the expected market median for a 2BHK in Koramangala (Expected: ₹28,000, Listed: ₹15,000)."
-      },
-      "image_authenticity": {
-        "score": 60,
-        "rating": "Suspicious",
-        "reason": "Images detected in 12 other listings across 3 different cities. Likely stolen from a genuine property."
-      },
-      "text_analysis": {
-        "score": 90,
-        "rating": "High Risk",
-        "reason": "Description contains extreme urgency markers ('call immediately', 'last chance') and demands advance token payment before seeing."
-      },
-      "broker_history": {
-        "score": 10,
-        "rating": "Low Risk",
-        "reason": "Broker phone number is relatively new but has no verified fraud complaints in the database."
-      }
-    },
-    "findings": [
-      "Listing price is dangerously below market average.",
-      "High urgency language detected combined with demands for money.",
-      "Images appear to be cloned from a luxury property in Mumbai.",
-      "The contact number was registered less than 2 weeks ago."
-    ]
-  },
-  "recommendations": [
-    "Do not transfer any 'token amount' or 'visiting fee' via UPI.",
-    "Insist on meeting the owner or broker in person at the property.",
-    "Verify the actual photos by asking for a live video call."
-  ]
-};
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -65,19 +23,45 @@ function App() {
 
   // Listen for the custom events emitted by the GSAP components
   useEffect(() => {
-    const handleStartAnalysis = (e) => {
-      setActiveUrl(e.detail.url);
+    const handleStartAnalysis = async (e) => {
+      const url = e.detail.url;
+      setActiveUrl(url);
       setAppState('analyzing');
+
+      try {
+        const formData = new FormData();
+        formData.append('url', url);
+
+        const response = await fetch('http://localhost:8000/analyze/url', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        // Ensure cinematic loading screen shows for at least 4.8s (4 steps * 1.2s)
+        const minLoadingTime = 5000;
+        const startTime = Date.now();
+
+        const timeElapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, minLoadingTime - timeElapsed);
+
+        setTimeout(() => {
+          setAnalysisResult(result.error ? { ...MOCK_RESULT, error: result.error } : result);
+          setAppState('results');
+        }, remainingTime);
+
+      } catch (error) {
+        console.error('Analysis failed:', error);
+        setTimeout(() => {
+          setAnalysisResult({ ...MOCK_RESULT, error: "Connection to Argus AI server lost. Please try again." });
+          setAppState('results');
+        }, 1000);
+      }
     };
 
     const handleAnalysisComplete = (e) => {
-      if (e.detail?.result) {
-        setAnalysisResult(e.detail.result);
-      } else {
-        // Fallback to mock if API failed but we want to show something
-        setAnalysisResult(MOCK_RESULT);
-      }
-      setAppState('results');
+      // This is now handled within handleStartAnalysis above
     };
 
     window.addEventListener('startAnalysis', handleStartAnalysis);
@@ -104,15 +88,14 @@ function App() {
     if (section) section.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleFinalCtaSelect = () => {
-    // Basic interaction for the new UI CTA triggering the global start flow with a dummy URL
-    const event = new CustomEvent('startAnalysis', { detail: { url: 'https://housing.com/rent/2bhk-flat-koramangala-bangalore' } });
+  const handleFinalCtaSelect = (url) => {
+    const event = new CustomEvent('startAnalysis', { detail: { url } });
     window.dispatchEvent(event);
   };
 
   return (
     <div className="min-h-screen w-full bg-bg">
-      
+
       {appState === 'home' && (
         <>
           <Navbar theme={theme} onThemeToggle={toggleTheme} onCtaClick={scrollToInput} />
@@ -129,7 +112,7 @@ function App() {
       )}
 
       {appState === 'analyzing' && (
-        <AnalysisScreen url={activeUrl} />
+        <AnalysisLoading />
       )}
 
       {appState === 'results' && (

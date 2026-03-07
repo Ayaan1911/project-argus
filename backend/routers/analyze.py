@@ -149,141 +149,28 @@ async def analyze_listing(
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 
-@router.post("/url", response_model=AnalysisResult)
+@router.post("/url")
 async def analyze_listing_url(url: str = Form(...)):
     """
     Analyze a rental listing from URL with intelligent scraping and fallback
-    
-    Accepts URL from supported platforms (99acres, MagicBricks, Housing.com, NoBroker)
-    Returns comprehensive risk analysis with scraped data
     """
     try:
-        from scrapers.listing_scraper import SmartScraper
-        
-        # Generate unique listing ID
-        listing_id = str(uuid.uuid4())
-        
-        # Scrape listing data (with intelligent fallback)
-        scraper = SmartScraper()
-        scraped = scraper.scrape(url)
-        
-        # Run price analysis
-        try:
-            price_result = price_engine.analyze_price(
-                price=scraped['price'],
-                city=scraped['city'],
-                locality=scraped['locality'],
-                property_type=scraped['property_type']
-            )
-        except Exception as e:
-            print(f"Price analysis error: {str(e)}")
-            price_result = {
-                "score": 50,
-                "verdict": "Unable to verify",
-                "market_median": None,
-                "percentage_below_market": None,
-                "reasoning": "Price analysis unavailable"
-            }
-        
-        # Build combined context for AI cross-signal reasoning
-        combined_context = f"""LISTING DETAILS:
-Title: {scraped['title']}
-Description: {scraped['description']}
+        if not url or "http" not in url:
+            return {"error": "Unable to analyze the provided listing URL."}
 
-PRICE ANALYSIS OBSERVATION:
-Listed Price: Rs {scraped['price']:,}
-Market Median: Rs {price_result.get('market_median', 'N/A')}
-Percentage Below Market: {price_result.get('percentage_below_market', 'N/A')}%
-Price Risk Score: {price_result['score']}/100
-Price Verdict: {price_result['verdict']}
-
-Based on ALL of the above information together, analyze this rental listing for Indian rental scam patterns. Consider both the price anomaly AND the description language together when forming your verdict. Cross-reference these signals to give a more accurate combined assessment."""
+        from services.argus_service import analyze_listing_url as run_argus_analysis
         
-        # Run text analysis with combined context
-        try:
-            text_result = text_engine.analyze_text(
-                title=scraped['title'],
-                description=combined_context,  # Pass combined context
-                contact_number=None
-            )
-        except Exception as e:
-            print(f"Text analysis error: {str(e)}")
-            text_result = {
-                "score": 50,
-                "verdict": "Unable to analyze",
-                "flags": [],
-                "reasoning": "Text analysis unavailable"
-            }
+        # Run the full production pipeline
+        result = await run_argus_analysis(url)
         
-        # Run image analysis (placeholder for now)
-        image_result = {
-            "score": 20,
-            "verdict": "No images analyzed",
-            "flags": [],
-            "reasoning": "Image analysis from URLs coming in Phase 2"
-        }
-        
-        # Calculate final risk score
-        final_result = risk_scorer.calculate_final_score(
-            price_result=price_result,
-            text_result=text_result,
-            image_result=image_result
-        )
-        
-        # Prepare response with scraped data
-        analysis_result = AnalysisResult(
-            risk_score=final_result["final_score"],
-            verdict=final_result["verdict"],
-            price_analysis=price_result,
-            text_analysis=text_result,
-            image_analysis=image_result,
-            recommendations=final_result["recommendations"],
-            listing_id=listing_id
-        )
-        
-        # Save to local JSON storage (simple file-based storage for demo)
-        try:
-            import json
-            from pathlib import Path
-            
-            results_file = Path("results.json")
-            results = []
-            
-            if results_file.exists():
-                with open(results_file, 'r') as f:
-                    results = json.load(f)
-            
-            results.append({
-                "listing_id": listing_id,
-                "timestamp": datetime.utcnow().isoformat(),
-                "source_url": url,
-                "scraped_data": scraped,
-                "analysis": analysis_result.dict()
-            })
-            
-            # Keep only last 100 results
-            results = results[-100:]
-            
-            with open(results_file, 'w') as f:
-                json.dump(results, f, indent=2)
-        except Exception as e:
-            print(f"Error saving to results.json: {str(e)}")
-        
-        # Add scraped data to response
-        response_dict = analysis_result.dict()
-        response_dict["scraped_data"] = {
-            "title": scraped['title'],
-            "description": scraped['description'],
-            "price": scraped['price'],
-            "locality": scraped['locality'],
-            "platform": scraped['platform'],
-            "source_url": url
-        }
-        response_dict["scrape_method"] = scraped['scrape_method']
-        response_dict["source_url"] = url
-        
-        return response_dict
+        # Return the normalized service result directly
+        return result
         
     except Exception as e:
-        print(f"URL analysis endpoint error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+        print(f"URL analysis error: {str(e)}")
+        return {"error": "Unable to analyze the provided listing URL."}
+
+@router.post("/listing")
+async def analyze_listing_api(url: str = Form(...)):
+    """API endpoint for listing analysis by URL."""
+    return await analyze_listing_url(url)
