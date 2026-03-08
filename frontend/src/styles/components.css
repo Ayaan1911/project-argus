@@ -1,0 +1,136 @@
+/* COMPONENT UTILITIES */
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #1a1a18; /* Always dark text on lemon yellow */
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(212, 240, 42, 0.35);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+}
+
+/* Cards */
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.pill-tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  background-color: var(--bg2);
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 6px 12px;
+  border-radius: 9999px;
+}
+
+/* Inputs */
+.premium-input {
+  width: 100%;
+  background-color: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.premium-input::placeholder {
+  color: var(--text-muted);
+}
+
+.premium-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212, 240, 42, 0.2);
+}
+
+.input-bar {
+  display: flex;
+  align-items: center;
+  background-color: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.input-bar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212, 240, 42, 0.2);
+}
+
+.input-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 18px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.input-bar input::placeholder {
+  color: var(--text-muted);
+}
+
+.input-bar button {
+  background-color: var(--text);
+  color: var(--bg);
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-right: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.input-bar button:hover {
+  opacity: 0.9;
+}

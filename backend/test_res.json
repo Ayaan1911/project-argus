@@ -1,0 +1,44 @@
+{
+  "url1": {
+    "url": "https://www.99acres.com/4-bhk-bedroom-independent-house-villa-for-rent-in-dodsworth-layout-bangalore-east-6500-sq-ft-spid-R88345030",
+    "platform": "99acres",
+    "city": "bangalore",
+    "price": 45000,
+    "risk_score": -0.011395,
+    "confidence_score": 0.0285,
+    "risk_level": "High Risk",
+    "explanation": "This listing has been classified as **High Risk** (anomaly score: -0.011). We strongly advise verifying the property in person and never transferring an advance payment without a signed rental agreement.",
+    "data_source": "fallback_mock",
+    "features_used": {
+      "price_vs_city_median": 1.0,
+      "description_length": 258.0,
+      "urgency_keyword_count": 0.0,
+      "image_count": 6.0,
+      "phone_reuse_count": 1.0,
+      "listings_per_day_per_phone": 1.0
+    },
+    "override_risk_level": "Likely Genuine",
+    "override_risk_score": 15
+  },
+  "url2": {
+    "url": "https://www.99acres.com/3-bhk-bedroom-apartment-flat-for-rent-in-total-environment-pursuit-of-a-radical-rhapsody-hoodi-bangalore-east-4303-sq-ft-spid-H89314277",
+    "platform": "99acres",
+    "city": "bangalore",
+    "price": 12000,
+    "risk_score": 0.006926,
+    "confidence_score": 0.0173,
+    "risk_level": "High Risk",
+    "explanation": "This listing has been classified as **High Risk** (anomaly score: 0.007). The description contains 4 urgency keyword(s) such as 'token', 'immediate', or 'advance' \u2014 language frequently associated with scams. We strongly advise verifying the property in person and never transferring an advance payment without a signed rental agreement.",
+    "data_source": "fallback_mock",
+    "features_used": {
+      "price_vs_city_median": 1.0,
+      "description_length": 226.0,
+      "urgency_keyword_count": 4.0,
+      "image_count": 1.0,
+      "phone_reuse_count": 1.0,
+      "listings_per_day_per_phone": 1.0
+    },
+    "override_risk_level": "High Risk",
+    "override_risk_score": 92
+  }
+}

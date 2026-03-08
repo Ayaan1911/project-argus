@@ -1,0 +1,280 @@
+{
+  "bangalore": {
+    "koramangala": {
+      "1bhk": 25000,
+      "2bhk": 38000,
+      "3bhk": 55000,
+      "pg": 8000,
+      "std_dev_percent": 0.20
+    },
+    "indiranagar": {
+      "1bhk": 24000,
+      "2bhk": 36000,
+      "3bhk": 52000,
+      "pg": 7500,
+      "std_dev_percent": 0.20
+    },
+    "whitefield": {
+      "1bhk": 18000,
+      "2bhk": 28000,
+      "3bhk": 42000,
+      "pg": 7000,
+      "std_dev_percent": 0.18
+    },
+    "hsr layout": {
+      "1bhk": 22000,
+      "2bhk": 34000,
+      "3bhk": 50000,
+      "pg": 7500,
+      "std_dev_percent": 0.20
+    },
+    "marathahalli": {
+      "1bhk": 17000,
+      "2bhk": 26000,
+      "3bhk": 38000,
+      "pg": 6500,
+      "std_dev_percent": 0.18
+    },
+    "electronic city": {
+      "1bhk": 15000,
+      "2bhk": 23000,
+      "3bhk": 35000,
+      "pg": 6000,
+      "std_dev_percent": 0.18
+    },
+    "jp nagar": {
+      "1bhk": 19000,
+      "2bhk": 30000,
+      "3bhk": 45000,
+      "pg": 7000,
+      "std_dev_percent": 0.18
+    },
+    "jayanagar": {
+      "1bhk": 20000,
+      "2bhk": 32000,
+      "3bhk": 48000,
+      "pg": 7200,
+      "std_dev_percent": 0.18
+    }
+  },
+  "mumbai": {
+    "bandra": {
+      "1bhk": 45000,
+      "2bhk": 70000,
+      "3bhk": 110000,
+      "pg": 12000,
+      "std_dev_percent": 0.25
+    },
+    "andheri": {
+      "1bhk": 32000,
+      "2bhk": 50000,
+      "3bhk": 75000,
+      "pg": 10000,
+      "std_dev_percent": 0.22
+    },
+    "powai": {
+      "1bhk": 35000,
+      "2bhk": 55000,
+      "3bhk": 85000,
+      "pg": 11000,
+      "std_dev_percent": 0.22
+    },
+    "thane": {
+      "1bhk": 18000,
+      "2bhk": 28000,
+      "3bhk": 42000,
+      "pg": 8000,
+      "std_dev_percent": 0.20
+    },
+    "navi mumbai": {
+      "1bhk": 20000,
+      "2bhk": 32000,
+      "3bhk": 48000,
+      "pg": 8500,
+      "std_dev_percent": 0.20
+    },
+    "malad": {
+      "1bhk": 25000,
+      "2bhk": 40000,
+      "3bhk": 60000,
+      "pg": 9000,
+      "std_dev_percent": 0.22
+    },
+    "goregaon": {
+      "1bhk": 26000,
+      "2bhk": 42000,
+      "3bhk": 65000,
+      "pg": 9500,
+      "std_dev_percent": 0.22
+    }
+  },
+  "delhi": {
+    "lajpat nagar": {
+      "1bhk": 20000,
+      "2bhk": 32000,
+      "3bhk": 50000,
+      "pg": 8000,
+      "std_dev_percent": 0.20
+    },
+    "dwarka": {
+      "1bhk": 18000,
+      "2bhk": 28000,
+      "3bhk": 45000,
+      "pg": 7500,
+      "std_dev_percent": 0.18
+    },
+    "rohini": {
+      "1bhk": 16000,
+      "2bhk": 25000,
+      "3bhk": 40000,
+      "pg": 7000,
+      "std_dev_percent": 0.18
+    },
+    "karol bagh": {
+      "1bhk": 22000,
+      "2bhk": 35000,
+      "3bhk": 55000,
+      "pg": 8500,
+      "std_dev_percent": 0.20
+    },
+    "saket": {
+      "1bhk": 28000,
+      "2bhk": 45000,
+      "3bhk": 70000,
+      "pg": 10000,
+      "std_dev_percent": 0.22
+    },
+    "vasant kunj": {
+      "1bhk": 26000,
+      "2bhk": 42000,
+      "3bhk": 65000,
+      "pg": 9500,
+      "std_dev_percent": 0.22
+    }
+  },
+  "pune": {
+    "hinjewadi": {
+      "1bhk": 16000,
+      "2bhk": 25000,
+      "3bhk": 38000,
+      "pg": 7000,
+      "std_dev_percent": 0.18
+    },
+    "kothrud": {
+      "1bhk": 18000,
+      "2bhk": 28000,
+      "3bhk": 42000,
+      "pg": 7500,
+      "std_dev_percent": 0.18
+    },
+    "baner": {
+      "1bhk": 17000,
+      "2bhk": 26000,
+      "3bhk": 40000,
+      "pg": 7200,
+      "std_dev_percent": 0.18
+    },
+    "viman nagar": {
+      "1bhk": 19000,
+      "2bhk": 30000,
+      "3bhk": 45000,
+      "pg": 7800,
+      "std_dev_percent": 0.18
+    },
+    "wakad": {
+      "1bhk": 15000,
+      "2bhk": 24000,
+      "3bhk": 36000,
+      "pg": 6800,
+      "std_dev_percent": 0.18
+    },
+    "kharadi": {
+      "1bhk": 17000,
+      "2bhk": 27000,
+      "3bhk": 41000,
+      "pg": 7200,
+      "std_dev_percent": 0.18
+    }
+  },
+  "hyderabad": {
+    "gachibowli": {
+      "1bhk": 18000,
+      "2bhk": 28000,
+      "3bhk": 42000,
+      "pg": 7500,
+      "std_dev_percent": 0.18
+    },
+    "madhapur": {
+      "1bhk": 19000,
+      "2bhk": 30000,
+      "3bhk": 45000,
+      "pg": 7800,
+      "std_dev_percent": 0.18
+    },
+    "kondapur": {
+      "1bhk": 17000,
+      "2bhk": 26000,
+      "3bhk": 40000,
+      "pg": 7200,
+      "std_dev_percent": 0.18
+    },
+    "banjara hills": {
+      "1bhk": 25000,
+      "2bhk": 40000,
+      "3bhk": 60000,
+      "pg": 9000,
+      "std_dev_percent": 0.22
+    },
+    "kukatpally": {
+      "1bhk": 15000,
+      "2bhk": 24000,
+      "3bhk": 36000,
+      "pg": 6500,
+      "std_dev_percent": 0.18
+    }
+  },
+  "chennai": {
+    "adyar": {
+      "1bhk": 20000,
+      "2bhk": 32000,
+      "3bhk": 48000,
+      "pg": 8000,
+      "std_dev_percent": 0.20
+    },
+    "anna nagar": {
+      "1bhk": 18000,
+      "2bhk": 28000,
+      "3bhk": 42000,
+      "pg": 7500,
+      "std_dev_percent": 0.18
+    },
+    "omr": {
+      "1bhk": 16000,
+      "2bhk": 25000,
+      "3bhk": 38000,
+      "pg": 7000,
+      "std_dev_percent": 0.18
+    },
+    "velachery": {
+      "1bhk": 17000,
+      "2bhk": 27000,
+      "3bhk": 40000,
+      "pg": 7200,
+      "std_dev_percent": 0.18
+    },
+    "tambaram": {
+      "1bhk": 12000,
+      "2bhk": 20000,
+      "3bhk": 30000,
+      "pg": 6000,
+      "std_dev_percent": 0.18
+    },
+    "porur": {
+      "1bhk": 15000,
+      "2bhk": 24000,
+      "3bhk": 36000,
+      "pg": 6800,
+      "std_dev_percent": 0.18
+    }
+  }
+}

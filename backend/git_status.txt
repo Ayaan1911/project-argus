@@ -1,0 +1,38 @@
+D  LICENSE
+D  "Project Argus.pdf"
+D  "Project Argus.pptx"
+D  README.md
+D  architecture.md
+ M backend/ai_layer/llm_explainer/explainer.py
+ M backend/ai_layer/pipeline.py
+ M backend/routers/analyze.py
+ M backend/routers/submissions.py
+ M backend/services/argus_service.py
+ M backend/services/image_engine.py
+ M backend/services/text_engine.py
+ M backend/setup_aws.py
+D  design.md
+D  docs/screenshots/landing_page.png
+D  docs/screenshots/result_screen_high_risk.png
+ M frontend/package-lock.json
+ M frontend/src/App.jsx
+ M frontend/src/api/argus.js
+ M frontend/src/styles/global.css
+D  requirements.md
+?? backend/ai_layer/input/url_analyzer.py
+?? backend/node_modules/
+?? backend/package-lock.json
+?? backend/package.json
+?? backend/test_aws.py
+?? backend/test_aws_output.txt
+?? backend/test_both_output.txt
+?? backend/test_both_results.json
+?? backend/test_both_urls.py
+?? backend/test_openrouter.py
+?? backend/test_openrouter_log.txt
+?? backend/test_openrouter_output.json
+?? backend/test_pdp.html
+?? backend/test_pdp.py
+?? backend/test_req.py
+?? backend/test_res.json
+?? backend/test_score.py

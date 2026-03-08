@@ -1,0 +1,20 @@
+{
+  "listing_id": "unknown",
+  "url": "https://www.99acres.com/3-bhk-bedroom-apartment-flat-for-rent-in-total-environment-pursuit-of-a-radical-rhapsody-hoodi-bangalore-east-4303-sq-ft-spid-H89314277",
+  "risk_level": "High Risk",
+  "risk_score": -0.012148,
+  "confidence_score": 0.0304,
+  "explanation": "This listing has been classified as **High Risk** (anomaly score: -0.012). The description contains 1 urgency keyword(s) such as 'token', 'immediate', or 'advance' — language frequently associated with scams. We strongly advise verifying the property in person and never transferring an advance payment without a signed rental agreement.",
+  "recommendations": [
+    "Verify the property and owner ID in person.",
+    "Never pay a 'visiting fee' or 'token amount' before seeing the property.",
+    "Compare the price with other listings in the same locality.",
+    "Request a live video call if you cannot visit immediately."
+  ],
+  "signals": {
+    "Price vs Market": 1.0,
+    "Urgency Language": 1.0,
+    "Phone Reuse": 1.0,
+    "Image Count": 1.0
+  }
+}

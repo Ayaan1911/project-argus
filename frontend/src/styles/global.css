@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-subtle: #94a3b8;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui;
+  --font-display: "Inter", ui-sans-serif, system-ui;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular;
+}
+
+@layer base {
+  :root {
+    --bg: #ffffff;
+    --fg: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --surface: #f8fafc;
+    --accent: #f59e0b;
+    --accent-fg: #000000;
+    --card: #ffffff;
+    --glow: rgba(245, 158, 11, 0.12);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0c0a09;
+    --fg: #ffffff;
+    --muted: #94a3b8;
+    --border: #334155;
+    --surface: #1e293b;
+    --card: #1e293b;
+    --glow: rgba(245, 158, 11, 0.2);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-fg antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.015;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .premium-bg {
+    @apply relative overflow-hidden;
+    background-color: var(--bg);
+  }
+
+  /* Sophisticated grid utility */
+  .grid-texture {
+    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Glassmorphism system - Updated to move away from white */
+  .glass {
+    @apply backdrop-blur-xl border shadow-sm;
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  [data-theme="dark"] .glass {
+    background: rgba(24, 24, 27, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card {
+    @apply rounded-3xl overflow-hidden transition-all duration-300;
+  }
+
+  /* Glow blob utility */
+  .glow-blob {
+    @apply absolute blur-[120px] rounded-full pointer-events-none opacity-20 -z-10;
+  }
+
+  .blob-orange {
+    background: #f59e0b;
+  }
+
+  .blob-purple {
+    background: #8b5cf6;
+  }
+
+  .blob-indigo {
+    background: #6366f1;
+  }
+}

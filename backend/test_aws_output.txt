@@ -1,0 +1,30 @@
+============================================================
+  Project Argus -- AWS Connection Test
+============================================================
+
+[1/4] Checking environment variables...
+  AWS_REGION            = us-east-1
+  DYNAMODB_TABLE        = argus-submissions
+  BEDROCK_MODEL_ID      = us.anthropic.claude-3-5-sonnet-20241022-v2:0
+  AWS_ACCESS_KEY_ID     = [OK]
+  AWS_SECRET_ACCESS_KEY = [OK]
+  -> All env vars loaded [OK]
+
+[2/4] Testing DynamoDB connection to 'argus-submissions'...
+  Table status : ACTIVE
+  Item count   : 0
+  Key schema   : [{'AttributeName': 'listing_id', 'KeyType': 'HASH'}]
+  -> DynamoDB connection [OK]
+
+[3/4] Testing Bedrock with model 'us.anthropic.claude-3-5-sonnet-20241022-v2:0'...
+  [FAIL] Bedrock error: An error occurred (ResourceNotFoundException) when calling the InvokeModel operation: Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 15 days. Please upgrade to an active model on Amazon Bedrock
+
+[4/4] Testing DynamoDB write/read cycle...
+  Write test item '_argus_test_20260307202014' [OK]
+  Read back item  [OK]
+  Cleanup deleted [OK]
+  -> DynamoDB read/write cycle [OK]
+
+============================================================
+  All AWS connection tests completed!
+============================================================

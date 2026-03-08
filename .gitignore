@@ -6,6 +6,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 build/
 dist/
@@ -14,29 +15,64 @@ dist/
 # Environment variables
 .env
 .env.local
+.env.development
+.env.production
 *.env
 
-# IDE
+# IDE & OS
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Backend specific
-project-argus-backend/results.json
+backend/__pycache__/
+backend/venv/
+backend/.env
+backend/results.json
+backend/data/*.json
+backend/data/*.csv
+backend/ai_layer/datasets/*.csv
+backend/ai_layer/models/*.pkl
+!backend/data/.gitkeep
+!backend/ai_layer/datasets/.gitkeep
 
 # Frontend specific
-project-argus-frontend/node_modules/
-project-argus-frontend/dist/
-project-argus-frontend/.env
-project-argus-frontend/.env.local
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/coverage/
+frontend/.next/
+frontend/out/
 
-# Test files
-project-argus-backend/test_scraper.py
+# Project Cleanliness
+tmp/
+temp/
+.gemini/
+.agents/
+.agent/
+_agents/
+_agent/
+brain/
+implementation_plan.md*
+task.md*
+walkthrough.md*
+*.webp
+*.png
+*.jpg
+*.pptx
+*.pdf
+
+# Allow screenshots
+!docs/screenshots/*.png
+!docs/screenshots/*.jpg

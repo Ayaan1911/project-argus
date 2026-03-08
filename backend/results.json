@@ -1,0 +1,182 @@
+[
+  {
+    "listing_id": "c4d10808-6354-48dd-b8f5-ff3e72711ae6",
+    "timestamp": "2026-03-06T08:22:43.868870",
+    "source_url": "https://www.magicbricks.com/demo-suspicious-listing",
+    "scraped_data": {
+      "title": "1BHK Flat for Rent - Indiranagar",
+      "description": "Good 1BHK flat available immediately. Nice area, good neighbors. All facilities available. Contact for details. Genuine buyers only.",
+      "price": 13000,
+      "locality": "Indiranagar",
+      "city": "Bangalore",
+      "property_type": "1BHK",
+      "image_urls": [],
+      "scrape_method": "mock",
+      "platform": "magicbricks"
+    },
+    "analysis": {
+      "risk_score": 62,
+      "verdict": "\u26a0\ufe0f Suspicious",
+      "price_analysis": {
+        "score": 96,
+        "verdict": "High Risk - Price Too Low",
+        "market_median": 24000,
+        "percentage_below_market": 45.83,
+        "reasoning": "Listed price of \u20b913,000 is 45.8% below market median of \u20b924,000. This is suspiciously low and may indicate a scam."
+      },
+      "text_analysis": {
+        "score": 50,
+        "verdict": "Suspicious",
+        "flags": [],
+        "reasoning": "Text analysis detected 0 red flags in the listing description."
+      },
+      "image_analysis": {
+        "score": 20,
+        "verdict": "No images analyzed",
+        "flags": [],
+        "reasoning": "Image analysis from URLs coming in Phase 2"
+      },
+      "recommendations": [
+        "Visit property before paying token amount",
+        "Verify broker identity with a government ID",
+        "Check if price matches nearby listings"
+      ],
+      "listing_id": "c4d10808-6354-48dd-b8f5-ff3e72711ae6"
+    }
+  },
+  {
+    "listing_id": "0198ce6c-44f4-4b9d-838a-e88933f3e422",
+    "timestamp": "2026-03-06T08:22:51.800573",
+    "source_url": "https://www.nobroker.in/demo-genuine-listing",
+    "scraped_data": {
+      "title": "2BHK Semi-Furnished - HSR Layout Sector 2",
+      "description": "2BHK apartment available from next month in HSR Layout Sector 2. 950 sq ft, east facing, 2nd floor. Modular kitchen, wardrobes in both rooms, covered parking. 24/7 security, power backup. Maintenance Rs 2000/month. 11-month agreement, 2-month deposit. Family preferred. Visit anytime 10am-6pm. Call Rajesh: 9123456789",
+      "price": 32000,
+      "locality": "HSR Layout",
+      "city": "Bangalore",
+      "property_type": "2BHK",
+      "image_urls": [],
+      "scrape_method": "mock",
+      "platform": "nobroker"
+    },
+    "analysis": {
+      "risk_score": 33,
+      "verdict": "\u26a0\ufe0f Suspicious",
+      "price_analysis": {
+        "score": 22,
+        "verdict": "Likely Genuine",
+        "market_median": 34000,
+        "percentage_below_market": 5.88,
+        "reasoning": "Listed price of \u20b932,000 is 5.9% below market median of \u20b934,000. This is within normal range."
+      },
+      "text_analysis": {
+        "score": 50,
+        "verdict": "Suspicious",
+        "flags": [],
+        "reasoning": "Text analysis detected 0 red flags in the listing description."
+      },
+      "image_analysis": {
+        "score": 20,
+        "verdict": "No images analyzed",
+        "flags": [],
+        "reasoning": "Image analysis from URLs coming in Phase 2"
+      },
+      "recommendations": [
+        "Visit property before paying token amount",
+        "Verify broker identity with a government ID",
+        "Check if price matches nearby listings"
+      ],
+      "listing_id": "0198ce6c-44f4-4b9d-838a-e88933f3e422"
+    }
+  },
+  {
+    "listing_id": "bc2e98f5-c9cf-4bdc-bc4b-2fe07992f4b9",
+    "timestamp": "2026-03-06T13:04:09.941659",
+    "source_url": "https://housing.com/rent/2bhk-flat-koramangala-bangalore",
+    "scraped_data": {
+      "title": "3BHK Luxury Apartment - Whitefield",
+      "description": "Premium 3BHK apartment in Whitefield tech corridor. 1400 sq ft, fully furnished with modern amenities. Swimming pool, gym, clubhouse access. Gated community with 24/7 security. Suitable for IT professionals. Rent includes maintenance. Available immediately.",
+      "price": 45000,
+      "locality": "Whitefield",
+      "city": "Bangalore",
+      "property_type": "3BHK",
+      "image_urls": [],
+      "scrape_method": "mock",
+      "platform": "housing"
+    },
+    "analysis": {
+      "risk_score": 36,
+      "verdict": "\u26a0\ufe0f Suspicious",
+      "price_analysis": {
+        "score": 30,
+        "verdict": "Unable to verify",
+        "market_median": null,
+        "percentage_below_market": null,
+        "reasoning": "Price benchmark data unavailable"
+      },
+      "text_analysis": {
+        "score": 50,
+        "verdict": "Suspicious",
+        "flags": [],
+        "reasoning": "Text analysis detected 0 red flags in the listing description."
+      },
+      "image_analysis": {
+        "score": 20,
+        "verdict": "No images analyzed",
+        "flags": [],
+        "reasoning": "Image analysis from URLs coming in Phase 2"
+      },
+      "recommendations": [
+        "Visit property before paying token amount",
+        "Verify broker identity with a government ID",
+        "Check if price matches nearby listings"
+      ],
+      "listing_id": "bc2e98f5-c9cf-4bdc-bc4b-2fe07992f4b9"
+    }
+  },
+  {
+    "listing_id": "7f064a57-4f14-473e-9d7c-2c211187eb1d",
+    "timestamp": "2026-03-06T13:04:09.976194",
+    "source_url": "https://housing.com/rent/2bhk-flat-koramangala-bangalore",
+    "scraped_data": {
+      "title": "3BHK Luxury Apartment - Whitefield",
+      "description": "Premium 3BHK apartment in Whitefield tech corridor. 1400 sq ft, fully furnished with modern amenities. Swimming pool, gym, clubhouse access. Gated community with 24/7 security. Suitable for IT professionals. Rent includes maintenance. Available immediately.",
+      "price": 45000,
+      "locality": "Whitefield",
+      "city": "Bangalore",
+      "property_type": "3BHK",
+      "image_urls": [],
+      "scrape_method": "mock",
+      "platform": "housing"
+    },
+    "analysis": {
+      "risk_score": 36,
+      "verdict": "\u26a0\ufe0f Suspicious",
+      "price_analysis": {
+        "score": 30,
+        "verdict": "Unable to verify",
+        "market_median": null,
+        "percentage_below_market": null,
+        "reasoning": "Price benchmark data unavailable"
+      },
+      "text_analysis": {
+        "score": 50,
+        "verdict": "Suspicious",
+        "flags": [],
+        "reasoning": "Text analysis detected 0 red flags in the listing description."
+      },
+      "image_analysis": {
+        "score": 20,
+        "verdict": "No images analyzed",
+        "flags": [],
+        "reasoning": "Image analysis from URLs coming in Phase 2"
+      },
+      "recommendations": [
+        "Visit property before paying token amount",
+        "Verify broker identity with a government ID",
+        "Check if price matches nearby listings"
+      ],
+      "listing_id": "7f064a57-4f14-473e-9d7c-2c211187eb1d"
+    }
+  }
+]

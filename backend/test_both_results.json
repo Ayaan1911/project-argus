@@ -1,0 +1,42 @@
+{
+  "LOW_RISK": {
+    "listing_id": "unknown",
+    "url": "https://www.99acres.com/4-bhk-bedroom-independent-house-villa-for-rent-in-dodsworth-layout-bangalore-east-6500-sq-ft-spid-R88345030",
+    "risk_level": "Likely Genuine",
+    "risk_score": 15,
+    "confidence_score": 0.0285,
+    "explanation": "This rental listing in Bangalore has several red flags that suggest it could be a fraudulent posting. The price is exactly the same as the city's typical rent, which is unusual. The listing also only shows 6 photos, which is on the low side. Additionally, the phone number used has been associated with other suspicious listings. Based on these signals, we've classified this as a high-risk listing. We recommend you thoroughly verify the property and owner's identity before sending any payment. Taking these extra steps can help protect you from rental scams.",
+    "recommendations": [
+      "Verify the property and owner ID in person.",
+      "Never pay a 'visiting fee' or 'token amount' before seeing the property.",
+      "Compare the price with other listings in the same locality.",
+      "Request a live video call if you cannot visit immediately."
+    ],
+    "signals": {
+      "Price vs Market": 1.0,
+      "Urgency Language": 0.0,
+      "Phone Reuse": 1.0,
+      "Image Count": 6.0
+    }
+  },
+  "HIGH_RISK": {
+    "listing_id": "unknown",
+    "url": "https://www.99acres.com/3-bhk-bedroom-apartment-flat-for-rent-in-total-environment-pursuit-of-a-radical-rhapsody-hoodi-bangalore-east-4303-sq-ft-spid-H89314277",
+    "risk_level": "High Risk",
+    "risk_score": 92,
+    "confidence_score": 0.0173,
+    "explanation": "This rental listing has several red flags that suggest it could be fraudulent. The price is exactly the same as the typical price in the area, which is unusual. The listing also uses a lot of words that create a false sense of urgency. Additionally, the phone number associated with the listing has been used for other postings, and there is only one low-quality image provided. Based on these factors, our system has classified this as a high-risk listing. We recommend you verify the property and landlord's identity before sending any money or personal information. It's important to be cautious with rental listings that seem too good to be true.",
+    "recommendations": [
+      "Verify the property and owner ID in person.",
+      "Never pay a 'visiting fee' or 'token amount' before seeing the property.",
+      "Compare the price with other listings in the same locality.",
+      "Request a live video call if you cannot visit immediately."
+    ],
+    "signals": {
+      "Price vs Market": 1.0,
+      "Urgency Language": 4.0,
+      "Phone Reuse": 1.0,
+      "Image Count": 1.0
+    }
+  }
+}
