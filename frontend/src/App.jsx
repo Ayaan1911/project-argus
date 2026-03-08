@@ -33,7 +33,8 @@ function App() {
         const formData = new FormData();
         formData.append('url', url);
 
-        const response = await fetch('http://localhost:8080/analyze/url', {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+        const response = await fetch(`${API_URL}/analyze/url`, {
           method: 'POST',
           body: formData
         });
