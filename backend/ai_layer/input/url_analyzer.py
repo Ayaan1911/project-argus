@@ -14,6 +14,7 @@ class ListingURLAnalyzer:
         # We try to use the playwright scraper to parse a single page
         try:
             from ai_layer.scraper.playwright_scraper import PlaywrightScraper
+            raise ImportError("Emergency Playwright disable")
             self.scraper = PlaywrightScraper()
         except ImportError:
             from ai_layer.scraper.bs4_scraper import BS4Scraper
@@ -67,15 +68,13 @@ class ListingURLAnalyzer:
                 logger.warning(f"Unsupported platform: {platform}")
                 return self._generate_fallback(url, platform, city)
                 
-            from playwright.async_api import async_playwright
-            async with async_playwright() as pw:
-                browser = await pw.chromium.launch(headless=True)
-                page = await browser.new_page()
-                logger.info(f"Navigating to {url}")
-                await page.goto(url, wait_until="domcontentloaded", timeout=5000)
-                
-                listings = await source.scrape_page(page, city)
-                await browser.close()
+            try:
+                from playwright.async_api import async_playwright
+                raise ImportError("Emergency Playwright disable")
+            except ImportError:
+                from ai_layer.scraper.bs4_scraper import BS4Scraper
+                bs4 = BS4Scraper()
+                listings = await bs4.scrape_page(url, city)
                 
                 if listings and len(listings) > 0:
                     listing = listings[0]

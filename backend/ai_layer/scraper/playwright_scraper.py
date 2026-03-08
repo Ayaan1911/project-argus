@@ -107,10 +107,13 @@ class PlaywrightScraper(BaseScraper):
 
         try:
             from playwright.async_api import async_playwright
+            raise ImportError("Emergency Playwright disable")
         except ImportError as exc:
-            logger.error(f"{LOG_PREFIX} Playwright not installed. Run: pip install playwright && playwright install chromium")
-            metrics["errors"] += 1
-            return metrics
+            logger.info("Playwright disabled, falling back to BS4Scraper silently.")
+            from ai_layer.scraper.bs4_scraper import BS4Scraper
+            import asyncio
+            bs4 = BS4Scraper()
+            return await asyncio.to_thread(bs4.run, cities, dataset_manager, max_pages)
 
         target_cities = cities or CITIES
 
