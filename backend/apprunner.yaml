@@ -3,7 +3,7 @@ runtime: python311
 build:
   commands:
     build:
-      - pip install -r requirements.txt
+      - pip install fastapi uvicorn boto3 python-dotenv openai scikit-learn pandas numpy requests beautifulsoup4
 run:
   command: bash start.sh
   network:
