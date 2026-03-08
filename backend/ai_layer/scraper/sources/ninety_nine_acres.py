@@ -56,7 +56,7 @@ async def scrape_page(page: "Page", city: str) -> list[dict]:
 
     try:
         # Wait for at least one listing card to appear (up to 15 s)
-        await page.wait_for_selector(_CARD_SELECTOR, timeout=15_000)
+        await page.wait_for_selector(_CARD_SELECTOR, timeout=5_000)
     except Exception:
         logger.warning("No listing cards found on this page — may be blocked or empty.")
         return listings

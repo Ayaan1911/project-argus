@@ -37,7 +37,7 @@ _SYSTEM_PROMPT = (
     "under 120 words."
 )
 
-_OPENROUTER_MODEL = "qwen/qwen3-vl-235b-a22b-thinking"
+_OPENROUTER_MODEL = "anthropic/claude-3-5-haiku-20241022"
 _OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 
@@ -156,7 +156,7 @@ class LLMExplainer:
         client = OpenAI(
             api_key=api_key,
             base_url=_OPENROUTER_BASE_URL,
-            timeout=30.0,
+            timeout=15.0,
             default_headers={
                 "HTTP-Referer": "https://github.com/project-argus",
                 "X-Title":      "Project Argus - Rental Scam Detector",
@@ -184,7 +184,7 @@ class LLMExplainer:
                 last_error = e
                 logger.warning(f"OpenRouter: Attempt {attempt} failed: {e}")
                 if attempt < max_retries:
-                    time.sleep(2 * attempt)  # exponential backoff
+                    time.sleep(1)  # quick retry
 
         raise last_error
 

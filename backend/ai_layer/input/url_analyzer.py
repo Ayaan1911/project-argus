@@ -50,12 +50,16 @@ class ListingURLAnalyzer:
         platform = self._identify_platform(url)
         city = self._extract_city(url)
         
-        # We need to mock a context and source_module to reuse the scraper logic,
-        # but for an ad-hoc URL the simplest way is to route directly to the source module
+        # 99acres blocks automated scraping consistently.
+        # Skip the Playwright attempt entirely and use the fast URL-based fallback.
+        # This saves 5-10 seconds per request.
+        if platform == "99acres":
+            logger.info("99acres detected — using fast URL-based fallback (scraping blocked)")
+            return self._generate_fallback(url, platform, city)
+        
+        # For other platforms, attempt scraping
         try:
-            if platform == "99acres":
-                from ai_layer.scraper.sources import ninety_nine_acres as source
-            elif platform == "magicbricks":
+            if platform == "magicbricks":
                 from ai_layer.scraper.sources import magicbricks as source
             elif platform == "housing":
                 from ai_layer.scraper.sources import housing_com as source
@@ -63,16 +67,13 @@ class ListingURLAnalyzer:
                 logger.warning(f"Unsupported platform: {platform}")
                 return self._generate_fallback(url, platform, city)
                 
-            # If we had a full playwright context we'd pass a "page" object.
-            # Building a lightweight playwright instance just for one URL:
             from playwright.async_api import async_playwright
             async with async_playwright() as pw:
                 browser = await pw.chromium.launch(headless=True)
                 page = await browser.new_page()
                 logger.info(f"Navigating to {url}")
-                await page.goto(url, wait_until="domcontentloaded", timeout=15000)
+                await page.goto(url, wait_until="domcontentloaded", timeout=5000)
                 
-                # Execute the specific source scraper
                 listings = await source.scrape_page(page, city)
                 await browser.close()
                 
